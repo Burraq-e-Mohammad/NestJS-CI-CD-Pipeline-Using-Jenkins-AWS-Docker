@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Build Docker Image'){
             steps{
-                sh 'docker build -t $IMAGE_NAME'
+                sh 'docker build -t $IMAGE_NAME .'
             }
         }
         stage('Stop & Remove Previous Container'){
@@ -30,18 +30,15 @@ pipeline {
         stage('Docker Container Run'){
             steps{
                 sh '''
-                    docker run -d -p ${PORT}:${PORT}
-                    --name $CONTAINER_NAME $IMAGE_NAME
+                    docker run -d -p ${PORT}:${PORT} --name $CONTAINER_NAME $IMAGE_NAME
                 '''
             }
         }
         stage('Send Email Notification'){
             steps{
-                emailtext{
-                    subject "NestJS Application Deployment Status On EC2"
-                    body "Your NestJS Application Has Been Successfully Deployed On http://13.48.43.61:${PORT}/"
-                    to '$EMAIL'
-                }
+                mail to: "${EMAIL}",
+                     subject: "NestJS Application Deployment Status On EC2",
+                     body: "Your NestJS Application Has Been Successfully Deployed On http://13.48.43.61:${PORT}/"
             }
         }
     }
