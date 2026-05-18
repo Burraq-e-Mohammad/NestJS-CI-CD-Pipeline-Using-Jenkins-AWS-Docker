@@ -40,7 +40,7 @@ pipeline {
     post {
         success {
             emailext(
-                subject: "SUCCESS: NestJS Deployment [Build #${env.BUILD_NUMBER}]",
+                subject: "SUCCESS!: NestJS Deployment [Build #${env.BUILD_NUMBER}]",
                 body: "Your NestJS Application has been successfully deployed and is live at http://13.51.194.31:${PORT}/",
                 to: "${EMAIL}"
             )
