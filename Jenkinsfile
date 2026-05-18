@@ -40,13 +40,13 @@ pipeline {
     post {
         success {
             emailext(
-                subject: "✅ SUCCESS: NestJS Deployment [Build #${env.BUILD_NUMBER}]",
+                subject: "SUCCESS: NestJS Deployment [Build #${env.BUILD_NUMBER}]",
                 body: "Your NestJS Application has been successfully deployed and is live at http://13.48.43.61:${PORT}/",
                 to: "${EMAIL}"
             )
         }
         failure {
-            echo "🚨 Pipeline failed at stage: ${env.STAGE_NAME}. Initiating recovery..."
+            echo "Pipeline failed at stage: ${env.STAGE_NAME}. Initiating recovery..."
             
             sh '''
                 docker run -d -p ${PORT}:${PORT} --name ${CONTAINER_NAME}_recovery ${IMAGE_NAME}:backup || echo "Rollback image not found."
